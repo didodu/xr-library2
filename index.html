@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XR 도서관 시연</title>
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  <style>
+    body { margin: 0; }
+    #panel { display: none; position: fixed; left: 12px; right: 12px; bottom: 16px; z-index: 9999;
+             background: rgba(255,255,255,0.95); color: #222; border-radius: 14px; padding: 14px 16px;
+             font-family: sans-serif; font-size: 15px; line-height: 1.5; max-height: 40vh; overflow-y: auto; }
+    #panel h3 { margin: 0 0 4px; font-size: 16px; }
+    #panel .tag { font-size: 12px; color: #888; margin-bottom: 6px; }
+    #panel ul { margin: 0; padding-left: 18px; }
+  </style>
+</head>
+<body>
+  <div id="panel">
+    <h3 id="p-title"></h3>
+    <div class="tag" id="p-tag"></div>
+    <ul id="p-list"></ul>
+  </div>
+
+  <a-scene mindar-image="imageTargetSrc: ./targets.mind; maxTrack: 1"
+           color-space="sRGB" renderer="colorManagement: true"
+           vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-assets>
+      <img id="card0" src="./card0.png"><img id="card1" src="./card1.png">
+      <img id="card2" src="./card2.png"><img id="card3" src="./card3.png">
+      <img id="card4" src="./card4.png"><img id="card5" src="./card5.png">
+      <img id="card6" src="./card6.png"><img id="card7" src="./card7.png">
+      <img id="card8" src="./card8.png"><img id="card9" src="./card9.png">
+    </a-assets>
+
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+    <a-entity mindar-image-target="targetIndex: 0" data-book="0"><a-image src="#card0" position="0 1.1 0" width="1" height="0.6"></a-image></a-entity>
+    <a-entity mindar-image-target="targetIndex: 1" data-book="1"><a-image src="#card1" position="0 1.1 0" width="1" height="0.6"></a-image></a-entity>
+    <a-entity mindar-image-target="targetIndex: 2" data-book="2"><a-image src="#card2" position="0 1.1 0" width="1" height="0.6"></a-image></a-entity>
+    <a-entity mindar-image-target="targetIndex: 3" data-book="3"><a-image src="#card3" position="0 1.1 0" width="1" height="0.6"></a-image></a-entity>
+    <a-entity mindar-image-target="targetIndex: 4" data-book="4"><a-image src="#card4" position="0 1.1 0" width="1" height="0.6"></a-image></a-entity>
+    <a-entity mindar-image-target="targetIndex: 5" data-book="5"><a-image src="#card5" position="0 1.1 0" width="1" height="0.6"></a-image></a-entity>
+    <a-entity mindar-image-target="targetIndex: 6" data-book="6"><a-image src="#card6" position="0 1.1 0" width="1" height="0.6"></a-image></a-entity>
+    <a-entity mindar-image-target="targetIndex: 7" data-book="7"><a-image src="#card7" position="0 1.1 0" width="1" height="0.6"></a-image></a-entity>
+    <a-entity mindar-image-target="targetIndex: 8" data-book="8"><a-image src="#card8" position="0 1.1 0" width="1" height="0.6"></a-image></a-entity>
+    <a-entity mindar-image-target="targetIndex: 9" data-book="9"><a-image src="#card9" position="0 1.1 0" width="1" height="0.6"></a-image></a-entity>
+  </a-scene>
+
+  <script>
+    // ▼ 여기만 고치세요: 0번 책부터 9번 책까지 순서대로
+    const REVIEW_LABEL = "시연용 예시 리뷰";  // 실제 리뷰라면 "출처: ○○서점 리뷰"처럼 바꾸기
+    const BOOKS = [
+      { title: "『0번 책 제목』", reviews: ["★★★★★ 좋은 하루", "★★★★ 되세요"] },
+      { title: "『1번 책 제목』", reviews: ["★★★★★ 당신은", "★★★★ 최고입니다"] },
+      { title: "『2번 책 제목』", reviews: ["★★★★★ 당신이라", "해낼 수 있어요"] },
+      { title: "『3번 책 제목』", reviews: ["★★★★★ 오늘도", "★★★★ 잘버텼어요"] },
+      { title: "『4번 책 제목』", reviews: ["★★★★★ 천천히가도", "★★★★ 괜찮아"] },
+      { title: "『5번 책 제목』", reviews: ["★★★★★ 쉬어가도", "★★★★ 괜찮아요"] },
+      { title: "『6번 책 제목』", reviews: ["★★★★★ 오늘의행운지수", "★★★★ 100"] },
+      { title: "『7번 책 제목』", reviews: ["★★★★★ 당신편이", "★★★★ 여기있잖아요"] },
+      { title: "『8번 책 제목』", reviews: ["★★★★★ 오늘하루", "★★★★ 수고많았어요"] },
+      { title: "『9번 책 제목』", reviews: ["★★★★★ 당신이", "★★★★ 최고랍니다"] }
+    ];
+    // ▲ 여기까지
+
+    const panel = document.getElementById("panel");
+    document.querySelectorAll("[data-book]").forEach(function (el) {
+      el.addEventListener("targetFound", function () {
+        const book = BOOKS[el.dataset.book];
+        document.getElementById("p-title").textContent = book.title;
+        document.getElementById("p-tag").textContent = REVIEW_LABEL;
+        const list = document.getElementById("p-list");
+        list.innerHTML = "";
+        book.reviews.forEach(function (r) {
+          const li = document.createElement("li");
+          li.textContent = r;
+          list.appendChild(li);
+        });
+        panel.style.display = "block";
+      });
+      el.addEventListener("targetLost", function () { panel.style.display = "none"; });
+    });
+  </script>
+</body>
+</html>
