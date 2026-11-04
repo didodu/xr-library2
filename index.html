@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>XR 도서관 시연</title>
+  <meta property="og:title" content="XR 도서관 시연">
+  <meta property="og:description" content="책 표지를 비추면 서가 위치와 리뷰가 나타나요">
+  <meta property="og:image" content="https://didodu.github.io/xr-library2/thumbnail.png">
+  <meta property="og:url" content="https://didodu.github.io/xr-library2/">
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   <style>
@@ -38,32 +42,30 @@
 
     <a-entity mindar-image-target="targetIndex: 0" data-book="0"><a-image src="#card0" position="0 1.1 0" width="1" height="0.6"></a-image></a-entity>
     <a-entity mindar-image-target="targetIndex: 1" data-book="1"><a-image src="#card1" position="0 1.1 0" width="1" height="0.6"></a-image></a-entity>
-    <a-entity mindar-image-target="targetIndex: 2" data-book="2"><a-image src="#card2" position="0 1.1 0" width="1" height="0.6"></a-image></a-entity>
-    <a-entity mindar-image-target="targetIndex: 3" data-book="3"><a-image src="#card3" position="0 1.1 0" width="1" height="0.6"></a-image></a-entity>
-    <a-entity mindar-image-target="targetIndex: 4" data-book="4"><a-image src="#card4" position="0 1.1 0" width="1" height="0.6"></a-image></a-entity>
-    <a-entity mindar-image-target="targetIndex: 5" data-book="5"><a-image src="#card5" position="0 1.1 0" width="1" height="0.6"></a-image></a-entity>
+    <a-entity mindar-image-target="targetIndex: 2" data-book="2"><a-image src="#card2" position="0 1.25 0" width="1" height="0.6"></a-image></a-entity>
+    <a-entity mindar-image-target="targetIndex: 3" data-book="3"><a-image src="#card3" position="0 0.85 0" width="1" height="0.6"></a-image></a-entity>
+    <a-entity mindar-image-target="targetIndex: 4" data-book="4"><a-image src="#card4" position="0 0.9 0" width="1" height="0.6"></a-image></a-entity>
+    <a-entity mindar-image-target="targetIndex: 5" data-book="5"><a-image src="#card5" position="0 1.15 0" width="1" height="0.6"></a-image></a-entity>
     <a-entity mindar-image-target="targetIndex: 6" data-book="6"><a-image src="#card6" position="0 1.1 0" width="1" height="0.6"></a-image></a-entity>
-    <a-entity mindar-image-target="targetIndex: 7" data-book="7"><a-image src="#card7" position="0 1.1 0" width="1" height="0.6"></a-image></a-entity>
-    <a-entity mindar-image-target="targetIndex: 8" data-book="8"><a-image src="#card8" position="0 1.1 0" width="1" height="0.6"></a-image></a-entity>
+    <a-entity mindar-image-target="targetIndex: 7" data-book="7"><a-image src="#card7" position="0 1.15 0" width="1" height="0.6"></a-image></a-entity>
+    <a-entity mindar-image-target="targetIndex: 8" data-book="8"><a-image src="#card8" position="0 0.9 0" width="1" height="0.6"></a-image></a-entity>
     <a-entity mindar-image-target="targetIndex: 9" data-book="9"><a-image src="#card9" position="0 1.1 0" width="1" height="0.6"></a-image></a-entity>
   </a-scene>
 
   <script>
-    // ▼ 여기만 고치세요: 0번 책부터 9번 책까지 순서대로
-    const REVIEW_LABEL = "시연용 예시 리뷰";  // 실제 리뷰라면 "출처: ○○서점 리뷰"처럼 바꾸기
+    const REVIEW_LABEL = "시연용 예시 리뷰";
     const BOOKS = [
-      { title: "『0번 책 제목』", reviews: ["★★★★★ 좋은 하루", "★★★★ 되세요"] },
-      { title: "『1번 책 제목』", reviews: ["★★★★★ 당신은", "★★★★ 최고입니다"] },
-      { title: "『2번 책 제목』", reviews: ["★★★★★ 당신이라", "해낼 수 있어요"] },
-      { title: "『3번 책 제목』", reviews: ["★★★★★ 오늘도", "★★★★ 잘버텼어요"] },
-      { title: "『4번 책 제목』", reviews: ["★★★★★ 천천히가도", "★★★★ 괜찮아"] },
-      { title: "『5번 책 제목』", reviews: ["★★★★★ 쉬어가도", "★★★★ 괜찮아요"] },
-      { title: "『6번 책 제목』", reviews: ["★★★★★ 오늘의행운지수", "★★★★ 100"] },
-      { title: "『7번 책 제목』", reviews: ["★★★★★ 당신편이", "★★★★ 여기있잖아요"] },
-      { title: "『8번 책 제목』", reviews: ["★★★★★ 오늘하루", "★★★★ 수고많았어요"] },
-      { title: "『9번 책 제목』", reviews: ["★★★★★ 당신이", "★★★★ 최고랍니다"] }
+      { title: "『종의 기원』 정유정", reviews: ["★★★★★ 첫 장부터 숨 막히는 긴장감에 밤새 읽었어요", "★★★★ 악인의 시선으로 따라가는 이야기라 낯설고도 강렬했어요"] },
+      { title: "『불안 세대』 조너선 하이트", reviews: ["★★★★★ 스마트폰과 아이들의 관계를 다시 생각하게 됐어요", "★★★★ 부모와 교사라면 꼭 읽어 볼 만한 책이에요"] },
+      { title: "『노인과 바다』 어니스트 헤밍웨이", reviews: ["★★★★★ 짧지만 오래 남는 이야기예요", "★★★★ 포기하지 않는 노인의 모습에서 힘을 얻었어요"] },
+      { title: "『딸기가 좋아! 토끼 베이커리』 마츠오 리카코", reviews: ["★★★★★ 아이가 그림을 보며 계속 딸기 케이크를 찾아요", "★★★★★ 따뜻한 그림체라 잠자리 동화로 좋아요"] },
+      { title: "『나는 문어』 서수인", reviews: ["★★★★★ 아이와 함께 문어 흉내 내며 읽었어요", "★★★★ 색감이 밝고 글이 짧아 처음 그림책으로 좋아요"] },
+      { title: "『채식주의자』 한강", reviews: ["★★★★ 읽고 나서도 한동안 여운이 남았어요", "★★★★ 쉽지 않지만 꼭 한 번은 읽어 볼 작품이에요"] },
+      { title: "『아주 작은 습관의 힘』 제임스 클리어", reviews: ["★★★★★ 작은 습관부터 바꿔 보게 만드는 책이에요", "★★★★ 바로 따라 할 수 있는 방법이 많아서 좋았어요"] },
+      { title: "『궤도』 서맨사 하비", reviews: ["★★★★ 우주정거장의 하루가 시처럼 그려져요", "★★★★ 천천히 읽을수록 아름다운 문장이 많아요"] },
+      { title: "『그릿』 앤절라 더크워스", reviews: ["★★★★★ 재능보다 끈기가 중요하다는 말에 용기를 얻었어요", "★★★★ 공부나 일이 지칠 때 다시 펼쳐 보는 책이에요"] },
+      { title: "『나미야 잡화점의 기적』 히가시노 게이고", reviews: ["★★★★★ 이야기들이 하나로 이어지는 순간 소름이 돋았어요", "★★★★★ 마음이 따뜻해지는 소설이에요"] }
     ];
-    // ▲ 여기까지
 
     const panel = document.getElementById("panel");
     document.querySelectorAll("[data-book]").forEach(function (el) {
