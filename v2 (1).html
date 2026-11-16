@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XR 도서관 시연</title>
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  <style>
+    body { margin: 0; font-family: sans-serif; }
+
+    /* 아래 정보 패널 */
+    #panel { display: none; position: fixed; left: 12px; right: 12px; bottom: 16px; z-index: 9999;
+             background: rgba(255,255,255,0.96); color: #222; border-radius: 14px; padding: 12px 14px;
+             font-size: 15px; line-height: 1.5; max-height: 50vh; overflow-y: auto;
+             box-shadow: 0 4px 16px rgba(0,0,0,0.25); }
+    #panel .head { display: flex; justify-content: space-between; align-items: center; }
+    #panel h3 { margin: 0; font-size: 16px; }
+    #p-close { border: none; background: none; font-size: 18px; color: #888; }
+
+    /* 선택 버튼 4개 */
+    .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 10px 0; }
+    .tabs button { padding: 9px 4px; border: 1px solid #ccc; border-radius: 10px;
+                   background: #f6f6f6; font-size: 14px; }
+    .tabs button.on { background: #2b5cab; color: #fff; border-color: #2b5cab; }
+    #p-body { color: #333; }
+    #p-body .hint { color: #999; font-size: 13px; }
+    #p-body ul { margin: 0; padding-left: 18px; }
+    #p-body a { color: #2b5cab; font-weight: bold; }
+    #p-platform { display: block; margin-top: 10px; padding: 9px; text-align: center; border-radius: 10px;
+                  background: #2b5cab; color: #fff; font-weight: bold; text-decoration: none; font-size: 14px; }
+
+    /* 표지 인식이 안 될 때 */
+    #fallback { position: fixed; top: 12px; right: 12px; z-index: 9999; padding: 8px 12px;
+                border: none; border-radius: 20px; background: rgba(0,0,0,0.6); color: #fff; font-size: 13px; }
+    #list { display: none; position: fixed; top: 52px; right: 12px; z-index: 9999; width: 220px;
+            background: #fff; border-radius: 12px; padding: 6px; max-height: 60vh; overflow-y: auto;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25); }
+    #list button { display: block; width: 100%; text-align: left; padding: 8px; border: none;
+                   background: none; font-size: 14px; border-bottom: 1px solid #eee; }
+  </style>
+</head>
+<body>
+
+  <!-- 정보 패널: 표지를 인식하면 나타나고, 버튼을 눌러 원하는 정보만 봄 -->
+  <div id="panel">
+    <div class="head">
+      <h3 id="p-title"></h3>
+      <button id="p-close" aria-label="닫기">✕</button>
+    </div>
+    <div class="tabs">
+      <button data-tab="loc">📍 책 위치</button>
+      <button data-tab="rating">⭐ 별점·리뷰</button>
+      <button data-tab="interview">🎤 저자 인터뷰</button>
+      <button data-tab="related">📚 연관도서</button>
+    </div>
+    <div id="p-body"></div>
+    <a id="p-platform" target="_blank" rel="noopener">📚 책결에서 별점 · 리뷰 보기 ↗</a>
+  </div>
+
+  <!-- 표지 인식이 안 될 때: 목록에서 직접 고르기 -->
+  <button id="fallback">표지 인식이 안 되나요?</button>
+  <div id="list"></div>
+
+  <a-scene mindar-image="imageTargetSrc: ./targets.mind; maxTrack: 1"
+           color-space="sRGB" renderer="colorManagement: true"
+           vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-assets>
+      <img id="card0" src="./card0.png"><img id="card1" src="./card1.png">
+      <img id="card2" src="./card2.png"><img id="card3" src="./card3.png">
+      <img id="card4" src="./card4.png"><img id="card5" src="./card5.png">
+      <img id="card6" src="./card6.png"><img id="card7" src="./card7.png">
+      <img id="card8" src="./card8.png"><img id="card9" src="./card9.png">
+    </a-assets>
+
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+    <!-- ⚠️ a-plane의 width / height / position은 지금 쓰고 있는 index.html 값으로 바꿔 넣으세요 -->
+    <a-entity data-i="0" mindar-image-target="targetIndex: 0"><a-plane src="#card0" width="1" height="0.5625" position="0 0 0.01"></a-plane></a-entity>
+    <a-entity data-i="1" mindar-image-target="targetIndex: 1"><a-plane src="#card1" width="1" height="0.5625" position="0 0 0.01"></a-plane></a-entity>
+    <a-entity data-i="2" mindar-image-target="targetIndex: 2"><a-plane src="#card2" width="1" height="0.5625" position="0 0 0.01"></a-plane></a-entity>
+    <a-entity data-i="3" mindar-image-target="targetIndex: 3"><a-plane src="#card3" width="1" height="0.5625" position="0 0 0.01"></a-plane></a-entity>
+    <a-entity data-i="4" mindar-image-target="targetIndex: 4"><a-plane src="#card4" width="1" height="0.5625" position="0 0 0.01"></a-plane></a-entity>
+    <a-entity data-i="5" mindar-image-target="targetIndex: 5"><a-plane src="#card5" width="1" height="0.5625" position="0 0 0.01"></a-plane></a-entity>
+    <a-entity data-i="6" mindar-image-target="targetIndex: 6"><a-plane src="#card6" width="1" height="0.5625" position="0 0 0.01"></a-plane></a-entity>
+    <a-entity data-i="7" mindar-image-target="targetIndex: 7"><a-plane src="#card7" width="1" height="0.5625" position="0 0 0.01"></a-plane></a-entity>
+    <a-entity data-i="8" mindar-image-target="targetIndex: 8"><a-plane src="#card8" width="1" height="0.5625" position="0 0 0.01"></a-plane></a-entity>
+    <a-entity data-i="9" mindar-image-target="targetIndex: 9"><a-plane src="#card9" width="1" height="0.5625" position="0 0 0.01"></a-plane></a-entity>
+  </a-scene>
+
+  <script>
+    // ====== 여기만 채우면 돼요 ======
+    // loc: 책 위치 / rating: 별점 / review: 한 줄 리뷰
+    // interview: 저자 인터뷰 링크 (label = 보여줄 글자, url = 주소)
+    // related: 연관도서 목록
+    const BOOKS = [
+      { title: "종의 기원 (정유정)",              loc: "[채우기] 예) 2층 문학실 813.7-정66ㅈ", rating: "★★★★☆ 4.5", review: "[채우기]", interview: { label: "경향신문 인터뷰 (2016)", url: "https://www.khan.co.kr/article/201606091526001" }, related: ["[채우기]", "[채우기]"] },
+      { title: "불안 세대 (조너선 하이트)",        loc: "[채우기]", rating: "[채우기]", review: "[채우기]", interview: { label: "Noema 인터뷰 (영어)", url: "https://www.noemamag.com/social-media-messed-up-our-kids-now-it-is-making-us-ungovernable" }, related: ["[채우기]"] },
+      { title: "노인과 바다 (헤밍웨이)",           loc: "[채우기]", rating: "[채우기]", review: "[채우기]", interview: { label: "Paris Review 인터뷰 (1958, 영어)", url: "https://theparisreview.org/interviews/4825/the-art-of-fiction-no-21-ernest-hemingway" }, related: ["[채우기]"] },
+      { title: "딸기가 좋아! 토끼 베이커리 (마츠오 리카코)", loc: "[채우기]", rating: "[채우기]", review: "[채우기]", interview: { label: "에혼나비 작가 인터뷰 (일본어)", url: "https://www.ehonnavi.net/specialcontents/contents_old.asp?id=450" }, related: ["[채우기]"] },
+      { title: "나는 문어 (서수인)",               loc: "[채우기]", rating: "[채우기]", review: "[채우기]", interview: { label: "작가 유튜브 채널", url: "https://www.youtube.com/channel/UCWYL2AWSAZ-jOO_eEPjuxOQ/videos" }, related: ["[채우기]"] },
+      { title: "채식주의자 (한강)",                loc: "[채우기]", rating: "[채우기]", review: "[채우기]", interview: { label: "맨부커상 수상 기자간담회 (2016)", url: "https://newstomato.com/ReadNews.aspx?no=657317" }, related: ["[채우기]"] },
+      { title: "아주 작은 습관의 힘 (제임스 클리어)", loc: "[채우기]", rating: "[채우기]", review: "[채우기]", interview: { label: "제임스 클리어 인터뷰", url: "https://www.dailygood.org/story/2439/tiny-changes-remarkable-results-tami-simon/?lang=ko" }, related: ["[채우기]"] },
+      { title: "궤도 (서맨사 하비)",               loc: "[채우기]", rating: "[채우기]", review: "[채우기]", interview: { label: "Science Friday 인터뷰 (영어 음성)", url: "https://sciencefriday.com/segments/samantha-harvey-orbital-wins-booker-prize" }, related: ["[채우기]"] },
+      { title: "그릿 (앤절라 더크워스)",           loc: "[채우기]", rating: "[채우기]", review: "[채우기]", interview: { label: "앤절라 더크워스 인터뷰", url: "https://www.dailygood.org/story/1448/grit-the-power-of-passion-and-perseverance-knowledge-wharton/?lang=ko" }, related: ["[채우기]"] },
+      { title: "나미야 잡화점의 기적 (히가시노 게이고)", loc: "[채우기]", rating: "[채우기]", review: "[채우기]", interview: { label: "뉴시스 단독 인터뷰 (2023)", url: "https://www.newsis.com/view/NISX20230224_0002205571" }, related: ["[채우기]"] }
+    ];
+    // ================================
+
+    const PLATFORM_URL = "https://didodu.github.io/xr-library2/platform.html"; // 책결 플랫폼 주소 (AR 0번 책 = 플랫폼 1번)
+    const panel = document.getElementById("panel");
+    const body = document.getElementById("p-body");
+    const tabs = document.querySelectorAll(".tabs button");
+    let current = null;
+
+    // 책 열기: 제목만 보여주고, 정보는 버튼을 눌러야 나옴
+    function openBook(i) {
+      if (!BOOKS[i]) return;
+      current = i;
+      document.getElementById("p-title").textContent = BOOKS[i].title;
+      body.innerHTML = '<span class="hint">보고 싶은 정보를 눌러 보세요</span>';
+      tabs.forEach(t => t.classList.remove("on"));
+      panel.style.display = "block";
+      document.getElementById("list").style.display = "none";
+      document.getElementById("p-platform").href = PLATFORM_URL + "?book=" + (i + 1);
+    }
+
+    // 버튼 누르면 그 정보만 표시
+    function showTab(tab) {
+      const b = BOOKS[current];
+      tabs.forEach(t => t.classList.toggle("on", t.dataset.tab === tab));
+      if (tab === "loc") body.innerHTML = b.loc;
+      if (tab === "rating") body.innerHTML = "<b>" + b.rating + "</b><br>" + b.review;
+      if (tab === "interview") body.innerHTML = '<a href="' + b.interview.url + '" target="_blank">▶ ' + b.interview.label + "</a>";
+      if (tab === "related") body.innerHTML = "<ul>" + b.related.map(r => "<li>" + r + "</li>").join("") + "</ul>";
+    }
+    tabs.forEach(t => t.addEventListener("click", () => showTab(t.dataset.tab)));
+    document.getElementById("p-close").addEventListener("click", () => { panel.style.display = "none"; });
+
+    // 표지를 인식하면 그 책 패널 열기
+    // (표지에서 카메라를 떼도 패널은 남아 있어서 편하게 누를 수 있음)
+    document.querySelectorAll("[data-i]").forEach(el => {
+      el.addEventListener("targetFound", () => {
+        const i = Number(el.dataset.i);
+        if (i !== current || panel.style.display === "none") openBook(i);
+      });
+    });
+
+    // 표지 인식이 안 될 때 ① 목록에서 고르기
+    const list = document.getElementById("list");
+    list.innerHTML = BOOKS.map((b, i) => '<button data-pick="' + i + '">' + i + ". " + b.title + "</button>").join("");
+    list.querySelectorAll("button").forEach(btn => btn.addEventListener("click", () => openBook(Number(btn.dataset.pick))));
+    document.getElementById("fallback").addEventListener("click", () => {
+      list.style.display = list.style.display === "block" ? "none" : "block";
+    });
+
+    // 표지 인식이 안 될 때 ② QR: 주소 뒤에 ?book=번호 를 붙이면 그 책이 바로 열림
+    // 예) https://아이디.github.io/xr-library2/?book=5  → 채식주의자
+    const q = new URLSearchParams(window.location.search).get("book");
+    if (q !== null) openBook(Number(q));
+  </script>
+</body>
+</html>
